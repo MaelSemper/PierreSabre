@@ -5,6 +5,8 @@ public class Humain {
 	private String nom;
 	private String boissonFavorite;
 	private int argents;
+	protected Humain memoire[] = new Humain[30];
+	protected int nbConnaissance = 0;
 
 	public Humain(String nom, String boissonFavorite, int argents) {
 		super();
@@ -31,6 +33,52 @@ public class Humain {
 		}
 	}
 
+	public void faireConnaissanceAvec(Humain humain) {
+		direBonjour();
+		humain.repondre(this);
+		memoriser(humain);
+	}
+
+	private void repondre(Humain humain) {
+		// TODO Auto-generated method stub
+		direBonjour();
+		memoriser(humain);
+	}
+
+	private void memoriser(Humain humain) {
+		// TODO Auto-generated method stub
+
+		boolean add = true;
+		for (int i = 0; i < nbConnaissance; i++) {
+			if (memoire[i] == humain) {
+				add = false;
+			}
+		}
+		if (add && nbConnaissance < memoire.length) {
+			memoire[nbConnaissance] = humain;
+			nbConnaissance++;
+		}
+
+		else if (add && nbConnaissance >= memoire.length) {
+			for (int i = 0; i < memoire.length - 1; i++) {
+				memoire[i] = memoire[i+1];
+			}
+			memoire[memoire.length-1] = humain;
+		}
+
+	}
+
+	public void listerConnaissance() {
+		String listeConnaissance = "Je connais beaucoup de monde ";
+		if (nbConnaissance != 0) {
+			listeConnaissance += "dont : ";
+			for (int i = 0; i < nbConnaissance; i++) {
+				listeConnaissance += memoire[i].getNom() + ", ";
+			}
+		}
+		parler(listeConnaissance);
+	}
+
 	protected void gagnerArgent(int gain) {
 		argents += gain;
 	}
@@ -40,7 +88,7 @@ public class Humain {
 	}
 
 	protected void parler(String txt) {
-		System.out.println("\n"+txt);
+		System.out.println("\n" + txt);
 	}
 
 	public String getNom() {
